@@ -52,15 +52,13 @@ class GitLastRequestHandler
      * Constructor.
      *
      * @param EventDispatcherInterface $dispatcher
-     * @param GitlabManager $gitlabManager
-     * @param ContainerInterface $container
-     * @param LoggerInterface $logger
+     * @param GitlabManager            $gitlabManager
+     * @param LoggerInterface          $logger
      */
-    public function __construct(EventDispatcherInterface $dispatcher, GitlabManager $gitlabManager, ContainerInterface $container, LoggerInterface $logger)
+    public function __construct(EventDispatcherInterface $dispatcher, GitlabManager $gitlabManager, LoggerInterface $logger)
     {
         $this->dispatcher = $dispatcher;
         $this->gitlabManager = $gitlabManager;
-        $this->container = $container;
         $this->logger = $logger;
     }
 
@@ -72,6 +70,9 @@ class GitLastRequestHandler
     public function handle(Request $request)
     {
         $data = json_decode($request->getContent(), true);
+
+        $this->logger->debug($request->getContent());
+
         if (null === $data) {
             throw new BadRequestHttpException('Invalid JSON body!');
         }
@@ -84,19 +85,20 @@ class GitLastRequestHandler
 
         $this->logger->debug(sprintf('Handling from repository %s', $repositoryFullName));
 
-        $manager = $this->gitlabManager->getRepository($repositoryFullName);
-
-        if (!$manager) {
-            throw new PreconditionFailedHttpException(sprintf('Unsupported repository "%s".', $repositoryFullName));
-        }
-
         $event = new WebhooksEvent($data);
         $eventName = $data['object_kind'];
+
+        $this->logger->debug(sprintf('Event dispatch: %s', $eventName));
 
         try {
             $this->dispatcher->dispatch('gitlab.'.$eventName, $event);
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf('Failed dispatching "%s" event for "%s" repository.', $repositoryFullName), 0, $e);
         }
+
+        return [
+            'event' => $eventName,
+            'repository' => $repositoryFullName,
+        ];
     }
 }

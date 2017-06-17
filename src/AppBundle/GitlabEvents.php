@@ -21,5 +21,14 @@ namespace AppBundle;
  */
 final class GitlabEvents
 {
+    /**
+     * Triggered when a new merge request is created, an existing merge request was updated/merged/closed
+     * or a commit is added in the source branch.
+     */
     const MERGE_REQUEST = 'gitlab.merge_request';
+
+    /**
+     * Triggered when you push to the repository except when pushing tags.
+     */
+    const PUSH = 'gitlab.push';
 }

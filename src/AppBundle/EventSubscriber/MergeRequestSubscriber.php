@@ -18,14 +18,14 @@ use AppBundle\StaticModel\Status;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class PullRequestSubscriber
+ * Merge request hook subscriber.
  *
  * @see https://docs.gitlab.com/ce/user/project/integrations/webhooks.html#merge-request-events
  *
  * @author Michael COULLERET <michael.coulleret@gmail.com>
  * @author Florent DESPIERRES <orions07@gmail.com>
  */
-class PullRequestSubscriber implements EventSubscriberInterface
+class MergeRequestSubscriber implements EventSubscriberInterface
 {
     /**
      * @var GitlabManager
