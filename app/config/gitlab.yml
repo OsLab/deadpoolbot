@@ -1,0 +1,6 @@
+parameters:
+    gitlab:
+        default_branch: '%giltab_default_branch%'
+        minimum_vote_up: '%giltab_minimum_vote_up%'
+        auto_merge: '%giltab_auto_merge%'
+        bot_username: '%giltab_bot_username%'
