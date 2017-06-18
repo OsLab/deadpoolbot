@@ -90,11 +90,11 @@ class GitLastRequestHandler
 
         $this->logger->debug(sprintf('Event dispatch: %s', $eventName));
 
-        try {
+//        try {
             $this->dispatcher->dispatch('gitlab.'.$eventName, $event);
-        } catch (\Exception $e) {
-            throw new \RuntimeException(sprintf('Failed dispatching "%s" event for "%s" repository.', $repositoryFullName), 0, $e);
-        }
+//        } catch (\Exception $e) {
+//            throw new \RuntimeException(sprintf('Failed dispatching "%s" event for "%s" repository.', $repositoryFullName), 0, $e);
+//        }
 
         return [
             'event' => $eventName,

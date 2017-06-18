@@ -33,7 +33,7 @@ class WebhookController extends Controller
      * @param GitLastRequestHandler $gitLastRequestHandler
      *
      * @Route("/webhooks/gitlab", name="webhooks_gitlab")
-     * @ Method("POST")
+     * @Method("POST")
      *
      * @return JsonResponse
      */

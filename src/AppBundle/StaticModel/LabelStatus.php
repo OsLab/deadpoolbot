@@ -1,5 +1,4 @@
 <?php
-/*
 
 /*
  * This file is part of the DeadPool Bot project.
@@ -9,21 +8,28 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace AppBundle\StaticModel;
 
 /**
- * Static model Status.
+ * Static model labels status.
  *
  * @author Michael COULLERET <michael.coulleret@gmail.com>
  * @author Florent DESPIERRES <orions07@gmail.com>
  */
-final class Status
+final class LabelStatus
 {
-    const NEEDS_REVIEW = 'needs_review';
+    const NEEDS_REVIEW = 'needs review';
 
-    const NEEDS_WORK = 'needs_work';
+    const NEEDS_WORK = 'needs work';
 
-    const WORKS_FOR_ME = 'works_for_me';
+    const REVIEWED = 'Reviewed';
 
-    const REVIEWED = 'reviewed';
+    const BUG = 'Bug';
+
+    const FEATURE = 'Feature';
+
+    const DEPRECATION = 'Deprecation';
+
+    const IMPROVE = 'Improve';
 }

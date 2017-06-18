@@ -42,6 +42,8 @@ class PushSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * Triggered when you push to the repository except when pushing tags.
+     *
      * @param WebhooksEvent $event
      */
     public function onPush(WebhooksEvent $event)

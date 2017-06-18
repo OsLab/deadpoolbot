@@ -31,4 +31,9 @@ final class GitlabEvents
      * Triggered when you push to the repository except when pushing tags.
      */
     const PUSH = 'gitlab.push';
+
+    /**
+     * Comment on merge request.
+     */
+    const NOTE = 'gitlab.note';
 }

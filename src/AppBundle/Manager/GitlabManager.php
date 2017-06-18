@@ -12,6 +12,7 @@
 namespace AppBundle\Manager;
 
 use Gitlab\Api\Issues;
+use Gitlab\Api\Labels;
 use Gitlab\Api\MergeRequests;
 use Gitlab\Api\Repositories;
 use Gitlab\Client;
@@ -61,5 +62,13 @@ class GitlabManager
     public function getIssues()
     {
         return $this->client->api('issues');
+    }
+
+    /**
+     * @return Labels
+     */
+    public function getLabels()
+    {
+        return $this->client->api('labels');
     }
 }
