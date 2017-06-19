@@ -1,24 +1,22 @@
 parameters:
-    database_host: 127.0.0.1
-    database_port: ~
-    database_name: symfony
-    database_user: root
-    database_password: ~
-    # You should uncomment this if you want to use pdo_sqlite
-    #database_path: '%kernel.project_dir%/var/data/data.sqlite'
+    env(DATABASE_URL): 'sqlite:///%kernel.project_dir%/var/data/ci.sqlite'
 
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: ~
-    mailer_password: ~
+    # If you don't use a real mail server, you can send emails via your Gmail account.
+    # see https://symfony.com/doc/current/cookbook/email/gmail.html
+    env(MAILER_URL): 'smtp://localhost:25?encryption=&auth_mode='
 
     # A secret key that's used to generate certain security-related tokens
-    secret: ThisTokenIsNotSoSecretChangeIt
+    env(SYMFONY_SECRET): 'secret_value_change_it'
 
-    # Token gitlab account
-    gitlab_token: xxx
-    gitlab_url: http://gitlab.domain.xx/api/v3/
-    giltab_default_branch: 'develop'
-    giltab_minimum_vote_up: 2
-    giltab_auto_merge: true
-    giltab_bot_username: deadpool
+    # Destination for log files; can also be "php://stderr" etc
+    env(LOG_URL): '%kernel.logs_dir%/%kernel.environment%.log'
+
+    # Gitlab config
+    env(GITLAB_TOKEN): 'xxx'
+    env(GITLAB_URL): http://gitlab.domain.xx/api/v3/
+    env(GITLAB_DEFAULT_BRANCH): 'develop'
+    env(GITLAB_MINIMUM_VOTE_UP): 2
+    env(GITLAB_AUTO_MERGE): true
+    env(GITLAB_BOT_USERNAME): 'deadpool'
+    env(GITLAB_MERGE_MUST_BE_APPROVED): false
+
