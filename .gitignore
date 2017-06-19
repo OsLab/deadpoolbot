@@ -9,6 +9,7 @@
 !/var/logs
 /var/logs/*
 !var/logs/.gitkeep
+!var/data/ci.sqlite
 !/var/sessions
 /var/sessions/*
 !var/sessions/.gitkeep

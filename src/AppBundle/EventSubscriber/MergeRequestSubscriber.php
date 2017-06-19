@@ -83,16 +83,16 @@ class MergeRequestSubscriber implements EventSubscriberInterface
             $labels[] = LabelStatus::BUG;
         }
 
-        if (preg_match('#^feature#i', $mergeRequestTitle, $matches)) {
-            $labels[] = LabelStatus::FEATURE;
-        }
-
         if (preg_match('#^Deprecations#i', $mergeRequestTitle, $matches)) {
             $labels[] = LabelStatus::DEPRECATION;
         }
 
         if (preg_match('#^Improve#i', $mergeRequestTitle, $matches)) {
             $labels[] = LabelStatus::IMPROVE;
+        }
+
+        if (count($labels) === 1) {
+            $labels[] = LabelStatus::FEATURE;
         }
 
         $params = [

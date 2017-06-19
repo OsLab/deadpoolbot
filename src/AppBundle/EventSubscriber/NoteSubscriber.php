@@ -68,17 +68,22 @@ class NoteSubscriber implements EventSubscriberInterface
     {
         $data = $event->getData();
 
+        $this->logger->info('onNote');
+
         if (false === $this->support($data)) {
             return;
         }
 
-        $mergeRequestNumber = $data['merge_request']['iid'];
+        $mergeRequestNumber = $data['merge_request']['id'];
         $mergeRequestProject = $data['merge_request']['target_project_id'];
+        $mergeRequestUsername = $data['user']['username'];
 
         // The number of votes is not given, we are obliged to request.
-        $mergeRequest = $this->gitlabManager->getPullRequest()->getByIid($mergeRequestProject, $mergeRequestNumber)[0];
+        $mergeRequest = $this->gitlabManager->getPullRequest()->getByIid($mergeRequestProject, $data['merge_request']['iid'])[0];
         $upVotes = $mergeRequest['upvotes'];
         $labels = $mergeRequest['labels'];
+
+        $this->logger->info('Up vote '.$upVotes);
 
         if ($upVotes > 0) {
             $labels[] = LabelStatus::REVIEWED;
@@ -87,19 +92,23 @@ class NoteSubscriber implements EventSubscriberInterface
                 'labels' => implode(',', $labels),
             ];
 
-            $this->gitlabManager->getPullRequest()->update($mergeRequestProject, $data['merge_request']['id'], $params);
+            $this->gitlabManager->getPullRequest()->update($mergeRequestProject, $mergeRequestNumber, $params);
         }
 
         // The minimum number of votes required is reached
         if ($upVotes >= $this->config->getConfig('minimum_vote_up')) {
             $this->logger->info('The minimum number of votes required is reached');
 
-            $message = sprintf('Thank you @%s', $data['user']['username']);
+            $message = sprintf('Thank you @%s', $mergeRequestUsername);
 
-            $this->gitlabManager->getPullRequest()->addComment($mergeRequestProject, $data['merge_request']['id'], $message);
+            $this->gitlabManager->getPullRequest()->addComment($mergeRequestProject, $mergeRequestNumber, $message);
 
             if ($this->config->getConfig('auto_merge')) {
-                $this->logger->info('Merge !');
+                if ($this->config->getConfig('merge_must_be_approved')) {
+                    /** @todo */
+
+                    return;
+                }
 
                 $this->gitlabManager->getPullRequest()->merge($mergeRequestProject, $mergeRequestNumber);
             }

@@ -44,7 +44,7 @@ class ConfigResolver
     public function getConfig($name)
     {
         if (!isset($this->parameters[$name])) {
-            throw new \RuntimeException('Parameter %s does not exists');
+            throw new \RuntimeException(sprintf('Parameter %s does not exists', $name));
         }
 
         return $this->parameters[$name];
