@@ -51,6 +51,8 @@ class WebhookController extends Controller
      * @param Request         $request
      * @param LoggerInterface $logger
      *
+     * @Route("/webhooks/jenkins", name="webhooks_jenkins")
+     *
      * @return JsonResponse
      */
     public function jenkinsAction(Request $request, LoggerInterface $logger)
