@@ -12,6 +12,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Handler\GitLastRequestHandler;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,7 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 class WebhookController extends Controller
 {
     /**
-     * Weebhook gitlab.
+     * Webhook gitlab.
      *
      * @param Request               $request
      * @param GitLastRequestHandler $gitLastRequestHandler
@@ -42,5 +43,20 @@ class WebhookController extends Controller
         $responseData = $gitLastRequestHandler->handle($request);
 
         return new JsonResponse($responseData);
+    }
+
+    /**
+     * Webhook jenkins.
+     *
+     * @param Request         $request
+     * @param LoggerInterface $logger
+     *
+     * @return JsonResponse
+     */
+    public function jenkinsAction(Request $request, LoggerInterface $logger)
+    {
+        $logger->debug($request->getContent());
+
+        return new JsonResponse([]);
     }
 }
