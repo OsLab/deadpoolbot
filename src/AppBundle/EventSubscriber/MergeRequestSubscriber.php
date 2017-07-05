@@ -79,15 +79,15 @@ class MergeRequestSubscriber implements EventSubscriberInterface
         $labels[] = LabelStatus::NEEDS_REVIEW;
 
         // the PR body usually indicates if this is a Bug, Feature, BC Break or Deprecation
-        if (preg_match('#^fix#i', $mergeRequestTitle, $matches)) {
+        if (preg_match('/\[(\s*fix\s*)\]/i', $mergeRequestTitle, $matches)) {
             $labels[] = LabelStatus::BUG;
         }
 
-        if (preg_match('#^Deprecations#i', $mergeRequestTitle, $matches)) {
+        if (preg_match('/\[(\s*deprecation\s*)\]/', $mergeRequestTitle, $matches)) {
             $labels[] = LabelStatus::DEPRECATION;
         }
 
-        if (preg_match('#^Improve#i', $mergeRequestTitle, $matches)) {
+        if (preg_match('/\[(\s*improve\s*)\]/i', $mergeRequestTitle, $matches)) {
             $labels[] = LabelStatus::IMPROVE;
         }
 
