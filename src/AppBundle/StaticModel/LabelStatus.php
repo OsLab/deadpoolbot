@@ -19,9 +19,9 @@ namespace AppBundle\StaticModel;
  */
 final class LabelStatus
 {
-    const NEEDS_REVIEW = 'needs review';
+    const NEEDS_REVIEW = 'Needs review';
 
-    const NEEDS_WORK = 'needs work';
+    const NEEDS_WORK = 'Needs work';
 
     const REVIEWED = 'Reviewed';
 
