@@ -36,4 +36,9 @@ final class GitlabEvents
      * Comment on merge request.
      */
     const NOTE = 'gitlab.note';
+
+    /**
+     * Triggered on status change of Pipeline.
+     */
+    const PIPELINE = 'gitlab.pipeline';
 }
