@@ -18,7 +18,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 
 /**
  * GitLast request handler.
@@ -63,6 +62,8 @@ class GitLastRequestHandler
     }
 
     /**
+     * Handle web hook.
+     *
      * @param Request $request
      *
      * @return array The response data
@@ -77,28 +78,15 @@ class GitLastRequestHandler
             throw new BadRequestHttpException('Invalid JSON body!');
         }
 
-        $repositoryFullName = isset($data['repository']['name']) ? $data['repository']['name'] : null;
-
-        if (empty($repositoryFullName)) {
-            throw new BadRequestHttpException('No repository name!');
-        }
-
-        $this->logger->debug(sprintf('Handling from repository %s', $repositoryFullName));
-
         $event = new WebhooksEvent($data);
         $eventName = $data['object_kind'];
 
         $this->logger->debug(sprintf('Event dispatch: %s', $eventName));
 
-//        try {
-            $this->dispatcher->dispatch('gitlab.'.$eventName, $event);
-//        } catch (\Exception $e) {
-//            throw new \RuntimeException(sprintf('Failed dispatching "%s" event for "%s" repository.', $repositoryFullName), 0, $e);
-//        }
+        $this->dispatcher->dispatch('gitlab.'.$eventName, $event);
 
         return [
             'event' => $eventName,
-            'repository' => $repositoryFullName,
         ];
     }
 }

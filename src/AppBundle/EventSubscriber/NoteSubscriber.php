@@ -120,6 +120,14 @@ class NoteSubscriber implements EventSubscriberInterface
      */
     public function support(array $data)
     {
+        if (false === isset($data['repository']['name'])) {
+            return false;
+        }
+
+        if ($data['user']['username'] === $this->config->getConfig('bot_username')) {
+            return false;
+        }
+
         if ($data['user']['username'] === $this->config->getConfig('bot_username')) {
             return false;
         }
