@@ -12,8 +12,6 @@
 namespace AppBundle\Handler;
 
 use AppBundle\Event\WebhooksEvent;
-use AppBundle\Manager\GitlabManager;
-use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,16 +31,6 @@ class GitLastRequestHandler
     private $dispatcher;
 
     /**
-     * @var GitlabManager
-     */
-    private $gitlabManager;
-
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -51,19 +39,15 @@ class GitLastRequestHandler
      * Constructor.
      *
      * @param EventDispatcherInterface $dispatcher
-     * @param GitlabManager            $gitlabManager
      * @param LoggerInterface          $logger
      */
-    public function __construct(EventDispatcherInterface $dispatcher, GitlabManager $gitlabManager, LoggerInterface $logger)
+    public function __construct(EventDispatcherInterface $dispatcher, LoggerInterface $logger)
     {
         $this->dispatcher = $dispatcher;
-        $this->gitlabManager = $gitlabManager;
         $this->logger = $logger;
     }
 
     /**
-     * Handle web hook.
-     *
      * @param Request $request
      *
      * @return array The response data
@@ -83,7 +67,11 @@ class GitLastRequestHandler
 
         $this->logger->debug(sprintf('Event dispatch: %s', $eventName));
 
-        $this->dispatcher->dispatch('gitlab.'.$eventName, $event);
+        try {
+            $this->dispatcher->dispatch('gitlab.'.$eventName, $event);
+        } catch (\Exception $exception) {
+            $this->logger->critical($exception->getMessage());
+        }
 
         return [
             'event' => $eventName,

@@ -15,8 +15,6 @@ use AppBundle\Event\WebhooksEvent;
 use AppBundle\GitlabEvents;
 use AppBundle\Manager\GitlabManager;
 use AppBundle\Resolver\ConfigResolver;
-use AppBundle\StaticModel\LabelStatus;
-use AppBundle\StaticModel\MergeRequestStatus;
 use AppBundle\StaticModel\PipelineStatus;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -78,17 +76,17 @@ class PipelineSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // The number of votes is not given, we are obliged to request.
-        $mergeRequest = $this->gitlabManager->getPullRequest()->getByIid($mergeRequestProject, $data['merge_request']['iid'])[0];
-        $upVotes = $mergeRequest['upvotes'];
-        $downVotes = $mergeRequest['downvotes'];
-
         $mergeRequestNumber = $data['merge_request']['id'];
         $mergeRequestProject = $data['merge_request']['target_project_id'];
         $mergeRequestUsername = $data['user']['username'];
         $projectWebUrl = $data['project']['web_url'];
         $pipelineStatus = $data['object_attributes']['status'];
         $builds = $data['builds'];
+
+        // The number of votes is not given, we are obliged to request.
+        $mergeRequest = $this->gitlabManager->getPullRequest()->getByIid($mergeRequestProject, $data['merge_request']['iid'])[0];
+        $upVotes = $mergeRequest['upvotes'];
+        $downVotes = $mergeRequest['downvotes'];
 
         // ***************
         // @todo waiting https://github.com/m4tthumphrey/php-gitlab-api/pull/201
