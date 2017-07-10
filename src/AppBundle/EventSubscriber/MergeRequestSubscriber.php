@@ -11,9 +11,11 @@
 
 namespace AppBundle\EventSubscriber;
 
+use AppBundle\Entity\MergeRequest;
 use AppBundle\Event\WebhooksEvent;
 use AppBundle\GitlabEvents;
 use AppBundle\Manager\GitlabManager;
+use AppBundle\Manager\MergeRequestManager;
 use AppBundle\Resolver\ConfigResolver;
 use AppBundle\StaticModel\LabelStatus;
 use AppBundle\StaticModel\MergeRequestStatus;
@@ -34,10 +36,17 @@ class MergeRequestSubscriber implements EventSubscriberInterface
      * @var GitlabManager
      */
     private $gitlabManager;
+
+    /**
+     * @var MergeRequestManager
+     */
+    private $mergeRequestManager;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
+
     /**
      * @var ConfigResolver
      */
@@ -46,15 +55,17 @@ class MergeRequestSubscriber implements EventSubscriberInterface
     /**
      * Constructor.
      *
-     * @param GitlabManager   $gitlabManager
-     * @param ConfigResolver  $config
-     * @param LoggerInterface $logger
+     * @param GitlabManager       $gitlabManager
+     * @param MergeRequestManager $mergeRequestManager
+     * @param ConfigResolver      $config
+     * @param LoggerInterface     $logger
      */
-    public function __construct(GitlabManager $gitlabManager, ConfigResolver $config, LoggerInterface $logger)
+    public function __construct(GitlabManager $gitlabManager, MergeRequestManager $mergeRequestManager, ConfigResolver $config, LoggerInterface $logger)
     {
         $this->gitlabManager = $gitlabManager;
         $this->logger = $logger;
         $this->config = $config;
+        $this->mergeRequestManager = $mergeRequestManager;
     }
 
     /**
@@ -106,8 +117,17 @@ class MergeRequestSubscriber implements EventSubscriberInterface
             'milestone_id' => null,
         ];
 
+        $mergeRequest = (new MergeRequest())
+            ->setProjectId($mergeRequestProject)
+            ->setLastCommitId($data['last_commit']['id'])
+            ->setSourceBranch($data['object_attributes']['source_branch'])
+            ->setObjectId($data['object_attributes']['id'])
+        ;
+
         try {
             $this->gitlabManager->getPullRequest()->update($mergeRequestProject, $mergeRequestNumber, $params);
+
+            $this->mergeRequestManager->createOrUpdate($mergeRequest);
         } catch (\Exception $exception) {
             $this->logger->error(sprintf('%s : %s', $exception->getMessage(), $exception->getTraceAsString()));
         }

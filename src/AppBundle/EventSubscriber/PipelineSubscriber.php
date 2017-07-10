@@ -14,8 +14,10 @@ namespace AppBundle\EventSubscriber;
 use AppBundle\Event\WebhooksEvent;
 use AppBundle\GitlabEvents;
 use AppBundle\Manager\GitlabManager;
+use AppBundle\Manager\MergeRequestManager;
 use AppBundle\Resolver\ConfigResolver;
 use AppBundle\StaticModel\PipelineStatus;
+use Gitlab\Api\MergeRequests;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -45,17 +47,24 @@ class PipelineSubscriber implements EventSubscriberInterface
     private $config;
 
     /**
+     * @var MergeRequestManager
+     */
+    private $mergeRequestManager;
+
+    /**
      * Constructor.
      *
-     * @param GitlabManager   $gitlabManager
-     * @param ConfigResolver  $config
-     * @param LoggerInterface $logger
+     * @param GitlabManager       $gitlabManager
+     * @param MergeRequestManager $mergeRequestManager
+     * @param ConfigResolver      $config
+     * @param LoggerInterface     $logger
      */
-    public function __construct(GitlabManager $gitlabManager, ConfigResolver $config, LoggerInterface $logger)
+    public function __construct(GitlabManager $gitlabManager, MergeRequestManager $mergeRequestManager, ConfigResolver $config, LoggerInterface $logger)
     {
         $this->gitlabManager = $gitlabManager;
         $this->logger = $logger;
         $this->config = $config;
+        $this->mergeRequestManager = $mergeRequestManager;
     }
 
     /**
@@ -76,52 +85,54 @@ class PipelineSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $mergeRequestNumber = $data['merge_request']['id'];
-        $mergeRequestProject = $data['merge_request']['target_project_id'];
-        $mergeRequestUsername = $data['user']['username'];
-        $projectWebUrl = $data['project']['web_url'];
-        $pipelineStatus = $data['object_attributes']['status'];
-        $builds = $data['builds'];
+        $this->logger->info('Pipeline commint : '.$data['commit']['id']);
 
-        // The number of votes is not given, we are obliged to request.
-        $mergeRequest = $this->gitlabManager->getPullRequest()->getByIid($mergeRequestProject, $data['merge_request']['iid'])[0];
-        $upVotes = $mergeRequest['upvotes'];
-        $downVotes = $mergeRequest['downvotes'];
+        $mergeRequest = $this->mergeRequestManager->findByCommit($data['commit']['id']);
 
-        // ***************
-        // @todo waiting https://github.com/m4tthumphrey/php-gitlab-api/pull/201
-        // ***************
-        if ($pipelineStatus === PipelineStatus::FAILED) {
-            $lastBuildId = $builds[0]['id'];
-
-            $message = sprintf('@%s, please fix the problem: %s/builds/%s#down-build-trace', $mergeRequestUsername, $projectWebUrl, $lastBuildId);
-            $this->gitlabManager->getPullRequest()->addComment($mergeRequestProject, $mergeRequestNumber, $message);
-
-            if ($upVotes > 0) {
-                $upVotes--;
-            }
-            $downVotes++;
-
-            $mergeRequest['downvotes'] = $downVotes;
-            $mergeRequest['upvotes'] = $upVotes;
-
-            $this->gitlabManager->getPullRequest()->update($mergeRequestProject, $mergeRequestNumber, $mergeRequest);
+        if (!$mergeRequest) {
+            $this->logger->info('Merge request is #'. $mergeRequest->getObjectId());
+        } else {
+            $this->logger->info('Bad way ! :/');
         }
 
-        if ($pipelineStatus === PipelineStatus::SUCCESS) {
-            $message = sprintf('Wow %@s, you\'re really too strong!', $mergeRequestUsername);
-            $this->gitlabManager->getPullRequest()->addComment($mergeRequestProject, $mergeRequestNumber, $message);
-
-            if ($downVotes > 0) {
-                $downVotes--;
-            }
-            $upVotes++;
-
-            $mergeRequest['downvotes'] = $downVotes;
-            $mergeRequest['upvotes'] = $upVotes;
-
-            $this->gitlabManager->getPullRequest()->update($mergeRequestProject, $mergeRequestNumber, $mergeRequest);
-        }
+//        $mergeRequest = $this->gitlabManager->getPullRequest()->getByIid($mergeRequestProject, $data['merge_request']['iid'])[0];
+//        $upVotes = $mergeRequest['upvotes'];
+//        $downVotes = $mergeRequest['downvotes'];
+//
+//        // ***************
+//        // @todo waiting https://github.com/m4tthumphrey/php-gitlab-api/pull/201
+//        // ***************
+//        if ($pipelineStatus === PipelineStatus::FAILED) {
+//            $lastBuildId = $builds[0]['id'];
+//
+//            $message = sprintf('@%s, please fix the problem: %s/builds/%s#down-build-trace', $mergeRequestUsername, $projectWebUrl, $lastBuildId);
+//            $this->gitlabManager->getPullRequest()->addComment($mergeRequestProject, $mergeRequestNumber, $message);
+//
+//            if ($upVotes > 0) {
+//                $upVotes--;
+//            }
+//            $downVotes++;
+//
+//            $mergeRequest['downvotes'] = $downVotes;
+//            $mergeRequest['upvotes'] = $upVotes;
+//
+//            $this->gitlabManager->getPullRequest()->update($mergeRequestProject, $mergeRequestNumber, $mergeRequest);
+//        }
+//
+//        if ($pipelineStatus === PipelineStatus::SUCCESS) {
+//            $message = sprintf('Wow %@s, you\'re really too strong!', $mergeRequestUsername);
+//            $this->gitlabManager->getPullRequest()->addComment($mergeRequestProject, $mergeRequestNumber, $message);
+//
+//            if ($downVotes > 0) {
+//                $downVotes--;
+//            }
+//            $upVotes++;
+//
+//            $mergeRequest['downvotes'] = $downVotes;
+//            $mergeRequest['upvotes'] = $upVotes;
+//
+//            $this->gitlabManager->getPullRequest()->update($mergeRequestProject, $mergeRequestNumber, $mergeRequest);
+//        }
     }
 
     /**
