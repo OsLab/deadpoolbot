@@ -20,3 +20,5 @@ parameters:
     env(GITLAB_BOT_USERNAME): 'deadpool'
     env(GITLAB_MERGE_MUST_BE_APPROVED): false
 
+    # Token for security
+    env(GITLAB_BOT_TOKEN): 1x4c40nwh96080gk70f7k5awz9k6tczqs3jr01z94849n
