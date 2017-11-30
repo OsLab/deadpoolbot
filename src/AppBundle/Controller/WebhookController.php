@@ -20,10 +20,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Webhook controller.
- *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class WebhookController extends Controller
 {
@@ -38,7 +36,7 @@ class WebhookController extends Controller
      *
      * @return JsonResponse
      */
-    public function gitlabAction(Request $request, GitLastRequestHandler $gitLastRequestHandler)
+    public function gitlabAction(Request $request, GitLastRequestHandler $gitLastRequestHandler): JsonResponse
     {
         $responseData = $gitLastRequestHandler->handle($request);
 
@@ -55,7 +53,7 @@ class WebhookController extends Controller
      *
      * @return JsonResponse
      */
-    public function jenkinsAction(Request $request, LoggerInterface $logger)
+    public function jenkinsAction(Request $request, LoggerInterface $logger): JsonResponse
     {
         $logger->debug($request->getContent());
 

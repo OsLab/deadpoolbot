@@ -36,8 +36,6 @@ class GitLastRequestHandler
     private $logger;
 
     /**
-     * Constructor.
-     *
      * @param EventDispatcherInterface $dispatcher
      * @param LoggerInterface          $logger
      */
@@ -52,7 +50,7 @@ class GitLastRequestHandler
      *
      * @return array The response data
      */
-    public function handle(Request $request)
+    public function handle(Request $request): array
     {
         $data = json_decode($request->getContent(), true);
 

@@ -27,8 +27,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @see https://docs.gitlab.com/ce/user/project/integrations/webhooks.html#merge-request-events
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class MergeRequestSubscriber implements EventSubscriberInterface
 {
@@ -53,8 +53,6 @@ class MergeRequestSubscriber implements EventSubscriberInterface
     private $config;
 
     /**
-     * Constructor.
-     *
      * @param GitlabManager       $gitlabManager
      * @param MergeRequestManager $mergeRequestManager
      * @param ConfigResolver      $config

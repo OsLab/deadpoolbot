@@ -16,8 +16,8 @@ namespace AppBundle;
  *
  * @see https://docs.gitlab.com/ce/system_hooks/system_hooks.html
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 final class GitlabEvents
 {

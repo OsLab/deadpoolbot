@@ -17,10 +17,13 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 /**
  * Manager for entity MergeRequest.
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class MergeRequestManager
 {
+    use ModelManagerTrait;
+
     /**
      * Constructor class.
      *
@@ -28,8 +31,7 @@ class MergeRequestManager
      */
     public function __construct(ManagerRegistry $doctrine)
     {
-        $this->entityManager = $doctrine->getManager();
-        $this->repository    = $doctrine->getRepository('AppBundle:MergeRequest');
+        $this->doctrine = $doctrine->getManager();
     }
 
     /**
@@ -39,7 +41,7 @@ class MergeRequestManager
      */
     public function findByCommit($commit)
     {
-        return $this->repository->findOneBy(['last_commit_id' => $commit]);
+        return $this->getRepository()->findOneBy(['last_commit_id' => $commit]);
     }
 
     /**
@@ -52,12 +54,20 @@ class MergeRequestManager
      */
     public function createOrUpdate(MergeRequest $mergeRequest, $andFlush = true)
     {
-        $this->entityManager->merge($mergeRequest);
+        $this->getEntityManager()->merge($mergeRequest);
 
         if ($andFlush === true) {
-            $this->entityManager->flush();
+            $this->getEntityManager()->flush();
         }
 
         return $mergeRequest;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRepository()
+    {
+        return $this->doctrine->getRepository('AppBundle:Alert');
     }
 }

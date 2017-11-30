@@ -16,8 +16,8 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Event Gitlab.
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class WebhooksEvent extends Event
 {
@@ -26,17 +26,12 @@ class WebhooksEvent extends Event
      */
     private $data;
 
-    /**
-     * Constructor.
-     *
-     * @param array $data
-     */
     public function __construct(array $data)
     {
         $this->data = $data;
     }
 
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }

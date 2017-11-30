@@ -17,7 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MergeRequestRepository")
  * @ORM\Table(name="merge_request")
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class MergeRequest
 {
@@ -58,106 +59,53 @@ class MergeRequest
      */
     private $lastCommitId;
 
-    /**
-     * get ObjectId
-     *
-     * @return string
-     */
-    public function getObjectId()
+    public function getObjectId(): int
     {
         return $this->objectId;
     }
 
-    /**
-     * Set ObjectId
-     *
-     * @param string $objectId
-     *
-     * @return self
-     */
-    public function setObjectId($objectId)
+    public function setObjectId(int $objectId): self
     {
         $this->objectId = $objectId;
 
         return $this;
     }
 
-    /**
-     * get Id
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * get SouceBranch
-     *
-     * @return string
-     */
-    public function getSourceBranch()
+    public function getSourceBranch(): string
     {
         return $this->sourceBranch;
     }
 
-    /**
-     * Set SourceBranch
-     *
-     * @param string $sourceBranch
-     *
-     * @return self
-     */
-    public function setSourceBranch($sourceBranch)
+    public function setSourceBranch(int $sourceBranch): self
     {
         $this->sourceBranch = $sourceBranch;
 
         return $this;
     }
 
-    /**
-     * get ProjectId
-     *
-     * @return string
-     */
-    public function getProjectId()
+    public function getProjectId(): int
     {
         return $this->projectId;
     }
 
-    /**
-     * Set ProjectId
-     *
-     * @param string $projectId
-     *
-     * @return self
-     */
-    public function setProjectId($projectId)
+    public function setProjectId(int $projectId): self
     {
         $this->projectId = $projectId;
 
         return $this;
     }
 
-    /**
-     * get LastCommitId
-     *
-     * @return string
-     */
-    public function getLastCommitId()
+    public function getLastCommitId(): int
     {
         return $this->lastCommitId;
     }
 
-    /**
-     * Set LastCommitId
-     *
-     * @param string $lastCommitId
-     *
-     * @return self
-     */
-    public function setLastCommitId($lastCommitId)
+    public function setLastCommitId(int $lastCommitId)
     {
         $this->lastCommitId = $lastCommitId;
 

@@ -1,0 +1,9 @@
+version: "2"
+
+services:
+    app:
+        image: dockerphp/nginx:7.1-jessie
+        volumes:
+            - .:/app
+        ports:
+            - "7001:443"

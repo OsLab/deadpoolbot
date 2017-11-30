@@ -25,8 +25,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @see https://docs.gitlab.com/ce/user/project/integrations/webhooks.html#comment-on-merge-request
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class NoteSubscriber implements EventSubscriberInterface
 {
@@ -44,8 +44,6 @@ class NoteSubscriber implements EventSubscriberInterface
     private $config;
 
     /**
-     * Constructor.
-     *
      * @param GitlabManager   $gitlabManager
      * @param ConfigResolver  $config
      * @param LoggerInterface $logger
@@ -118,7 +116,7 @@ class NoteSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function support(array $data)
+    public function support(array $data): bool
     {
         if (false === isset($data['repository']['name'])) {
             return false;
@@ -143,7 +141,7 @@ class NoteSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             GitlabEvents::NOTE => 'onNote',

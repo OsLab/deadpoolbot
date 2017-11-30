@@ -14,8 +14,8 @@ namespace AppBundle\Resolver;
 /**
  * Config resolver.
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class ConfigResolver
 {
@@ -34,14 +34,7 @@ class ConfigResolver
         $this->parameters = $parameters;
     }
 
-    /**
-     * Get parameter config.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    public function getConfig($name)
+    public function getConfig(string $name): string
     {
         if (!isset($this->parameters[$name])) {
             throw new \RuntimeException(sprintf('Parameter %s does not exists', $name));

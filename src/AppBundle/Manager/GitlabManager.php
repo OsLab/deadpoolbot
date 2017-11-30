@@ -11,8 +11,6 @@
 
 namespace AppBundle\Manager;
 
-use Gitlab\Api\Issues;
-use Gitlab\Api\Labels;
 use Gitlab\Api\MergeRequests;
 use Gitlab\Api\Repositories;
 use Gitlab\Client;
@@ -20,8 +18,8 @@ use Gitlab\Client;
 /**
  * Gitlab Manager.
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class GitlabManager
 {
@@ -31,8 +29,6 @@ class GitlabManager
     private $client;
 
     /**
-     * Constructor.
-     *
      * @param Client $client
      */
     public function __construct(Client $client)
@@ -43,7 +39,7 @@ class GitlabManager
     /**
      * @return Repositories
      */
-    public function getRepository($name)
+    public function getRepository(): Repositories
     {
         return $this->client->api('repositories');
     }
@@ -51,24 +47,8 @@ class GitlabManager
     /**
      * @return MergeRequests
      */
-    public function getPullRequest()
+    public function getPullRequest(): MergeRequests
     {
         return $this->client->api('merge_requests');
-    }
-
-    /**
-     * @return Issues
-     */
-    public function getIssues()
-    {
-        return $this->client->api('issues');
-    }
-
-    /**
-     * @return Labels
-     */
-    public function getLabels()
-    {
-        return $this->client->api('labels');
     }
 }

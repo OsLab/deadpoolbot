@@ -14,10 +14,8 @@ namespace AppBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class AppBundle.
- *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class AppBundle extends Bundle
 {

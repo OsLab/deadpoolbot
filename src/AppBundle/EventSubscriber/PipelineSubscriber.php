@@ -26,8 +26,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @see https://docs.gitlab.com/ce/user/project/integrations/webhooks.html#pipeline-events
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class PipelineSubscriber implements EventSubscriberInterface
 {
@@ -52,8 +52,6 @@ class PipelineSubscriber implements EventSubscriberInterface
     private $mergeRequestManager;
 
     /**
-     * Constructor.
-     *
      * @param GitlabManager       $gitlabManager
      * @param MergeRequestManager $mergeRequestManager
      * @param ConfigResolver      $config

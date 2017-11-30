@@ -16,8 +16,8 @@ namespace AppBundle\StaticModel;
 /**
  * Static model merge request status.
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 final class MergeRequestStatus
 {

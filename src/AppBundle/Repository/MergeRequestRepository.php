@@ -16,7 +16,8 @@ use Doctrine\ORM\EntityRepository;
 /**
  * Repository for entity Alert.
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class MergeRequestRepository extends EntityRepository
 {
@@ -24,7 +25,7 @@ class MergeRequestRepository extends EntityRepository
      * Find all.
      * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $query = $this->createQueryBuilder('mr');
 
