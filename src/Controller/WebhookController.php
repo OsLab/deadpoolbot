@@ -12,7 +12,6 @@
 namespace App\Controller;
 
 use App\Handler\GitLastRequestHandler;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,22 +39,5 @@ class WebhookController extends AbstractController
         $responseData = $gitLastRequestHandler->handle($request);
 
         return new JsonResponse($responseData);
-    }
-
-    /**
-     * Webhook jenkins.
-     *
-     * @param Request         $request
-     * @param LoggerInterface $logger
-     *
-     * @Route("/webhooks/jenkins", name="webhooks_jenkins")
-     *
-     * @return JsonResponse
-     */
-    public function jenkinsAction(Request $request, LoggerInterface $logger): JsonResponse
-    {
-        $logger->debug($request->getContent());
-
-        return new JsonResponse([]);
     }
 }
