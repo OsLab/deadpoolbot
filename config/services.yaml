@@ -5,6 +5,7 @@ parameters:
         auto_merge:             '%env(GITLAB_AUTO_MERGE)%'
         bot_username:           '%env(GITLAB_BOT_USERNAME)%'
         merge_must_be_approved: '%env(GITLAB_MERGE_MUST_BE_APPROVED)%'
+    locale: 'en'
 
 services:
     _defaults:
