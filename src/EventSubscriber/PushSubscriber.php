@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace AppBundle\EventSubscriber;
+namespace App\EventSubscriber;
 
-use AppBundle\Event\WebhooksEvent;
-use AppBundle\GitlabEvents;
-use AppBundle\Manager\GitlabManager;
+use App\Event\WebhooksEvent;
+use App\GitlabEvents;
+use App\Manager\GitlabManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

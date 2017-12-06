@@ -3,11 +3,16 @@
     "license": "proprietary",
     "require": {
         "php": "^7.0.8",
+        "php-http/guzzle6-adapter": "^1.1",
+        "symfony/annotations-pack": "^1.0",
+        "sensio/framework-extra-bundle": "^5.0",
         "symfony/console": "^3.4",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^3.4",
         "symfony/lts": "^3",
-        "symfony/yaml": "^3.4"
+        "symfony/orm-pack": "^1.0",
+        "symfony/yaml": "^3.4",
+        "zeichen32/gitlabapibundle": "^3.0"
     },
     "require-dev": {
         "symfony/dotenv": "^3.4"

@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace AppBundle\EventSubscriber;
+namespace App\EventSubscriber;
 
-use AppBundle\Event\WebhooksEvent;
-use AppBundle\GitlabEvents;
-use AppBundle\Manager\GitlabManager;
-use AppBundle\Manager\MergeRequestManager;
-use AppBundle\Resolver\ConfigResolver;
-use AppBundle\StaticModel\PipelineStatus;
+use App\Event\WebhooksEvent;
+use App\GitlabEvents;
+use App\Manager\GitlabManager;
+use App\Manager\MergeRequestManager;
+use App\Resolver\ConfigResolver;
+use App\StaticModel\PipelineStatus;
 use Gitlab\Api\MergeRequests;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
