@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the DeadPool Bot project.
+ * This file is part of the ci-bot project.
  *
  * (c) OsLab <https://github.com/OsLab>
  *
@@ -25,13 +25,14 @@ class ConfigResolver
     private $parameters;
 
     /**
-     * Constructor.
-     *
-     * @param array $parameters
+     * @var string
      */
-    public function __construct(array $parameters = [])
+    private $environment;
+
+    public function __construct(array $parameters = [], string $environment = 'prod')
     {
         $this->parameters = $parameters;
+        $this->environment = $environment;
     }
 
     public function getConfig(string $name): string
@@ -41,5 +42,10 @@ class ConfigResolver
         }
 
         return $this->parameters[$name];
+    }
+
+    public function isPropagateOnAPI(): bool
+    {
+        return $this->environment !== 'test';
     }
 }

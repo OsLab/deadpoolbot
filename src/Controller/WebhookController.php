@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the DeadPool Bot project.
+ * This file is part of the ci-bot project.
  *
  * (c) OsLab <https://github.com/OsLab>
  *
@@ -15,7 +15,8 @@ use App\Handler\GitLastRequestHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * @author Michael COULLERET <michael@coulleret.pro>

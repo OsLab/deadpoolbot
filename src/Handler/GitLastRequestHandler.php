@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the DeadPool Bot project.
+ * This file is part of the ci-bot project.
  *
  * (c) OsLab <https://github.com/OsLab>
  *
@@ -11,6 +11,7 @@
 
 namespace App\Handler;
 
+use App\Chain\TransformerChain;
 use App\Event\WebhooksEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -20,8 +21,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 /**
  * GitLast request handler.
  *
- * @author Michael COULLERET <michael.coulleret@gmail.com>
- * @author Florent DESPIERRES <orions07@gmail.com>
+ * @author Michael COULLERET <michael@coulleret.pro>
+ * @author Florent DESPIERRES <florent@despierres.pro>
  */
 class GitLastRequestHandler
 {
@@ -36,32 +37,29 @@ class GitLastRequestHandler
     private $logger;
 
     /**
-     * @param EventDispatcherInterface $dispatcher
-     * @param LoggerInterface          $logger
+     * @var TransformerChain
      */
-    public function __construct(EventDispatcherInterface $dispatcher, LoggerInterface $logger)
+    private $transformerChain;
+
+    public function __construct(EventDispatcherInterface $dispatcher, TransformerChain $transformerChain, LoggerInterface $logger)
     {
         $this->dispatcher = $dispatcher;
         $this->logger = $logger;
+        $this->transformerChain = $transformerChain;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return array The response data
-     */
     public function handle(Request $request): array
     {
         $data = json_decode($request->getContent(), true);
-
-        $this->logger->debug($request->getContent());
 
         if (null === $data) {
             throw new BadRequestHttpException('Invalid JSON body!');
         }
 
-        $event = new WebhooksEvent($data);
         $eventName = $data['object_kind'];
+
+        $transformer = $this->transformerChain->getTransformer($eventName);
+        $event = new WebhooksEvent($transformer->transform($data));
 
         $this->logger->debug(sprintf('Event dispatch: %s', $eventName));
 

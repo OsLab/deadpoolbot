@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Compiler\TransformerCompilerPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,6 +33,16 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new TransformerCompilerPass());
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)

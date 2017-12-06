@@ -1,4 +1,11 @@
 parameters:
+    gitlab:
+        default_branch:         '%env(GITLAB_DEFAULT_BRANCH)%'
+        minimum_vote_up:        '%env(GITLAB_MINIMUM_VOTE_UP)%'
+        auto_merge:             '%env(GITLAB_AUTO_MERGE)%'
+        bot_username:           '%env(GITLAB_BOT_USERNAME)%'
+        merge_must_be_approved: '%env(GITLAB_MERGE_MUST_BE_APPROVED)%'
+    locale: 'en'
 
 services:
     _defaults:
@@ -13,3 +20,18 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    Gitlab\Client: ~
+
+    App\Resolver\ConfigResolver:
+        arguments:
+            $parameters: '%gitlab%'
+            $environment: '%kernel.environment%'
+
+    App\Transformer\MergeRequestTransformer:
+        tags:
+            -  { name: app.transformers, alias: merge_request }
+
+    App\Transformer\NoteTransformer:
+        tags:
+            - { name: app.transformers, alias: facebook }
