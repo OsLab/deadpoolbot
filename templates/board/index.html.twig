@@ -8,9 +8,12 @@
     </div>
 
     <div class="row">
+        {% for mergeRequest in mergeRequests %}
         <div class="col-sm-12">
-            (:
+            <h3>#{{ mergeRequest.iid }} {{ mergeRequest.sourceBranch }}</h3>
+            <p>{{ mergeRequest.url }}</p>
         </div>
+        {% endfor %}
     </div>
 {% endblock %}
 

@@ -16,9 +16,9 @@ use App\Event\WebhooksEvent;
 use App\GitlabEvents;
 use App\Manager\GitlabManager;
 use App\Manager\MergeRequestManager;
+use App\Repository\MergeRequestRepository;
 use App\Resolver\ConfigResolver;
 use App\StaticModel\LabelStatus;
-use App\StaticModel\MergeRequestStatus;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -53,12 +53,12 @@ class MergeRequestSubscriber implements EventSubscriberInterface
     private $config;
 
     /**
-     * @param GitlabManager       $gitlabManager
-     * @param MergeRequestManager $mergeRequestManager
-     * @param ConfigResolver      $config
-     * @param LoggerInterface     $logger
+     * @param GitlabManager          $gitlabManager
+     * @param MergeRequestRepository $mergeRequestManager
+     * @param ConfigResolver         $config
+     * @param LoggerInterface        $logger
      */
-    public function __construct(GitlabManager $gitlabManager, MergeRequestManager $mergeRequestManager, ConfigResolver $config, LoggerInterface $logger)
+    public function __construct(GitlabManager $gitlabManager, MergeRequestRepository $mergeRequestManager, ConfigResolver $config, LoggerInterface $logger)
     {
         $this->gitlabManager = $gitlabManager;
         $this->logger = $logger;
@@ -82,7 +82,7 @@ class MergeRequestSubscriber implements EventSubscriberInterface
         }
 
         $mergeRequestNumber = $data['object_attributes']['id'];
-        $mergeRequestProject = $data['object_attributes']['target_project_id'];
+        $mergeRequestProjectId = $data['object_attributes']['target_project_id'];
         $mergeRequestTitle = $data['object_attributes']['title'];
 
         $labels[] = LabelStatus::NEEDS_REVIEW;
@@ -116,19 +116,16 @@ class MergeRequestSubscriber implements EventSubscriberInterface
         ];
 
         $mergeRequest = (new MergeRequest())
-            ->setProjectId($mergeRequestProject)
-            ->setLastCommitId($data['last_commit']['id'])
+            ->setProjectId($mergeRequestProjectId)
+            ->setLastCommitId($data['object_attributes']['last_commit']['id'])
             ->setSourceBranch($data['object_attributes']['source_branch'])
             ->setObjectId($data['object_attributes']['id'])
+            ->setUrl($data['object_attributes']['url'])
+            ->setIid($data['object_attributes']['iid'])
         ;
 
-        try {
-            $this->gitlabManager->getPullRequest()->update($mergeRequestProject, $mergeRequestNumber, $params);
-
-            $this->mergeRequestManager->createOrUpdate($mergeRequest);
-        } catch (\Exception $exception) {
-            $this->logger->error(sprintf('%s : %s', $exception->getMessage(), $exception->getTraceAsString()));
-        }
+//        $this->gitlabManager->getPullRequest()->update($mergeRequestProjectId, $mergeRequestNumber, $params);
+        $this->mergeRequestManager->createOrUpdate($mergeRequest);
     }
 
     /**
@@ -136,7 +133,7 @@ class MergeRequestSubscriber implements EventSubscriberInterface
      */
     public function support(array $data)
     {
-        if (false === isset($data['repository']['name'])) {
+        if (false === isset($data['object_kind']) && $data['object_kind'] !== 'merge_request') {
             return false;
         }
 
@@ -144,9 +141,9 @@ class MergeRequestSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        if (MergeRequestStatus::OPEN !== $data['object_attributes']['action']) {
-            return false;
-        }
+//        if (MergeRequestStatus::OPEN !== $data['object_attributes']['action']) {
+//            return false;
+//        }
 
         return true;
     }

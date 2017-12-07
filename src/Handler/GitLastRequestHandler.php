@@ -68,6 +68,7 @@ class GitLastRequestHandler
         try {
             $this->dispatcher->dispatch('gitlab.'.$eventName, $event);
         } catch (\Exception $exception) {
+            var_dump($exception->getMessage(), $exception->getTraceAsString());die;
             $this->logger->critical($exception->getMessage());
         }
 

@@ -22,13 +22,13 @@ install: up vendor info
 ## Provisioning
 ##---------------------------------------------------------------------------
 start:          ## start the project
-start: up info
+start: up perm info
 
 stop:           ## Stop docker containers
 	$(DC) down
 
 restart:        ## Restart the whole project
-restart: stop start info
+restart: stop start perm info
 
 bash:           ## Switch to the bash App container of the application
 	@$(DC) exec app bash
@@ -40,6 +40,9 @@ logs:           ## Show container logs
 
 up:
 	$(DC) up -d --remove-orphans
+
+perm:
+	$(DC) exec app chmod 777 -Rf var vendor
 
 vendor: composer.lock
 	@$(DC) exec app composer install
