@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the DeadPool Bot project.
+ * This file is part of the ci-bot project.
  *
  * (c) OsLab <https://github.com/OsLab>
  *
@@ -26,12 +26,12 @@ class WebhooksEvent extends Event
      */
     private $data;
 
-    public function __construct(array $data)
+    public function __construct(Object $data)
     {
         $this->data = $data;
     }
 
-    public function getData(): array
+    public function getData(): Object
     {
         return $this->data;
     }

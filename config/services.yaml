@@ -21,8 +21,17 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    App\Resolver\ConfigResolver:
-        arguments: [ '%gitlab%' ]
+    Gitlab\Client: ~
 
-    Gitlab\Client:
+    App\Resolver\ConfigResolver:
         arguments:
+            $parameters: '%gitlab%'
+            $environment: '%kernel.environment%'
+
+    App\Transformer\MergeRequestTransformer:
+        tags:
+            -  { name: app.transformers, alias: merge_request }
+
+    App\Transformer\NoteTransformer:
+        tags:
+            - { name: app.transformers, alias: facebook }

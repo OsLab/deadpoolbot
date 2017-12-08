@@ -10,26 +10,32 @@
     <php>
         <ini name="error_reporting" value="-1" />
         <env name="KERNEL_CLASS" value="App\Kernel" />
-        <env name="APP_ENV" value="test" />
-        <env name="APP_DEBUG" value="1" />
-        <env name="APP_SECRET" value="s$cretf0rt3st" />
-        <env name="SHELL_VERBOSITY" value="-1" />
-        <!-- define your env variables for the test env here -->
+        <env name="APP_ENV" value="test"/>
+        <env name="APP_DEBUG" value="1"/>
+        <env name="APP_SECRET" value="HN59mPmWcN8q2XwJdAN2s59f599fB6jAhh9"/>
+
+        <!-- Gitlab -->
+        <env name="GITLAB_TOKEN" value="xxx"/>
+        <env name="GITLAB_URL" value="http://gitlab.domain.xx/api/v3/"/>
+        <env name="GITLAB_DEFAULT_BRANCH" value="develop"/>
+        <env name="GITLAB_MINIMUM_VOTE_UP" value="2"/>
+        <env name="GITLAB_AUTO_MERGE" value="true"/>
+        <env name="GITLAB_BOT_USERNAME" value="ci-bot"/>
+        <env name="GITLAB_MERGE_MUST_BE_APPROVED" value="false"/>
+        <env name="GITLAB_BOT_TOKEN" value="1x4c40nwh96080gk70f7k5awz9k6tczqs3jr01z94849n"/>
+
+        <!-- ###+ doctrine/doctrine-bundle ### -->
+        <env name="DATABASE_URL" value="sqlite:///var/data/ci.sqlite"/>
+        <!-- ###- doctrine/doctrine-bundle ### -->
+
+        <!-- ###+ symfony/swiftmailer-bundle ### -->
+        <env name="MAILER_URL" value="null://localhost"/>
+        <!-- ###- symfony/swiftmailer-bundle ### -->
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="Project ci-bot Test Suite">
             <directory>tests/</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>./src/</directory>
-        </whitelist>
-    </filter>
-
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
 </phpunit>

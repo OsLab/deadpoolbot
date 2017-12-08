@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the DeadPool Bot project.
+ * This file is part of the ci-bot project.
  *
  * (c) OsLab <https://github.com/OsLab>
  *
@@ -15,10 +15,10 @@ use App\Entity\MergeRequest;
 use App\Event\WebhooksEvent;
 use App\GitlabEvents;
 use App\Manager\GitlabManager;
-use App\Manager\MergeRequestManager;
 use App\Repository\MergeRequestRepository;
 use App\Resolver\ConfigResolver;
 use App\StaticModel\LabelStatus;
+use Doctrine\ORM\ORMException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -38,7 +38,7 @@ class MergeRequestSubscriber implements EventSubscriberInterface
     private $gitlabManager;
 
     /**
-     * @var MergeRequestManager
+     * @var MergeRequestRepository
      */
     private $mergeRequestManager;
 
@@ -72,31 +72,30 @@ class MergeRequestSubscriber implements EventSubscriberInterface
      * @param WebhooksEvent $event
      *
      * @see https://docs.gitlab.com/ee/api/merge_requests.html#update-mr
+     *
+     * @throws ORMException
      */
     public function onMergeRequest(WebhooksEvent $event)
     {
-        $data = $event->getData();
+        /** @var MergeRequest $data */
+        $mergeRequest = $event->getData();
 
-        if (false === $this->support($data)) {
+        if (false === $this->support($mergeRequest)) {
             return;
         }
-
-        $mergeRequestNumber = $data['object_attributes']['id'];
-        $mergeRequestProjectId = $data['object_attributes']['target_project_id'];
-        $mergeRequestTitle = $data['object_attributes']['title'];
 
         $labels[] = LabelStatus::NEEDS_REVIEW;
 
         // the PR body usually indicates if this is a Bug, Feature, BC Break or Deprecation
-        if (preg_match('/\[(\s*fix\s*)\]/i', $mergeRequestTitle, $matches)) {
+        if (preg_match('/\[(\s*fix\s*)\]/i', $mergeRequest->getTitle(), $matches)) {
             $labels[] = LabelStatus::BUG;
         }
 
-        if (preg_match('/\[(\s*deprecation\s*)\]/', $mergeRequestTitle, $matches)) {
+        if (preg_match('/\[(\s*deprecation\s*)\]/', $mergeRequest->getTitle(), $matches)) {
             $labels[] = LabelStatus::DEPRECATION;
         }
 
-        if (preg_match('/\[(\s*improve\s*)\]/i', $mergeRequestTitle, $matches)) {
+        if (preg_match('/\[(\s*improve\s*)\]/i', $mergeRequest->getTitle(), $matches)) {
             $labels[] = LabelStatus::IMPROVE;
         }
 
@@ -108,42 +107,28 @@ class MergeRequestSubscriber implements EventSubscriberInterface
             'labels' => implode(',', $labels),
             'squash' => true,
             'remove_source_branch' => true,
-            'title' => $mergeRequestTitle,
+            'title' => $mergeRequest->getTitle(),
             'target_branch' => $this->config->getConfig('default_branch'),
-            'description' => $data['object_attributes']['description'],
-            'assignee_id' => $data['object_attributes']['assignee_id'],
+            'description' => $mergeRequest->getDescription(),
+            'assignee_id' => $mergeRequest->getAssigneeId(),
             'milestone_id' => null,
         ];
 
-        $mergeRequest = (new MergeRequest())
-            ->setProjectId($mergeRequestProjectId)
-            ->setLastCommitId($data['object_attributes']['last_commit']['id'])
-            ->setSourceBranch($data['object_attributes']['source_branch'])
-            ->setObjectId($data['object_attributes']['id'])
-            ->setUrl($data['object_attributes']['url'])
-            ->setIid($data['object_attributes']['iid'])
-        ;
-
-//        $this->gitlabManager->getPullRequest()->update($mergeRequestProjectId, $mergeRequestNumber, $params);
         $this->mergeRequestManager->createOrUpdate($mergeRequest);
+
+        if ($this->config->isPropagateOnAPI()) {
+            $this->gitlabManager->getPullRequest()->update($mergeRequest->getProjectId(), $mergeRequest->getObjectId(), $params);
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function support(array $data)
+    public function support(Object $mergeRequest)
     {
-        if (false === isset($data['object_kind']) && $data['object_kind'] !== 'merge_request') {
+        if ($mergeRequest->getUsername() === $this->config->getConfig('bot_username')) {
             return false;
         }
-
-        if ($data['user']['username'] === $this->config->getConfig('bot_username')) {
-            return false;
-        }
-
-//        if (MergeRequestStatus::OPEN !== $data['object_attributes']['action']) {
-//            return false;
-//        }
 
         return true;
     }

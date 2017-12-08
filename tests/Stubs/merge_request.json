@@ -1,0 +1,120 @@
+{
+  "object_kind": "merge_request",
+  "user": {
+    "name": "Michaël Coulleret",
+    "username": "michael.coulleret",
+    "avatar_url": "https://gitlab.domain/uploads/-/system/user/avatar/1025/large_1414686.png"
+  },
+  "project": {
+    "name": "recette-ci",
+    "description": "",
+    "web_url": "https://gitlab.domain/michael.coulleret/recette-ci",
+    "avatar_url": null,
+    "git_ssh_url": "git@gitlab.domain:michael.coulleret/recette-ci.git",
+    "git_http_url": "https://gitlab.domain/michael.coulleret/recette-ci.git",
+    "namespace": "michael.coulleret",
+    "visibility_level": 0,
+    "path_with_namespace": "michael.coulleret/recette-ci",
+    "default_branch": "master",
+    "ci_config_path": null,
+    "homepage": "https://gitlab.domain/michael.coulleret/recette-ci",
+    "url": "git@gitlab.domain:michael.coulleret/recette-ci.git",
+    "ssh_url": "git@gitlab.domain:michael.coulleret/recette-ci.git",
+    "http_url": "https://gitlab.domain/michael.coulleret/recette-ci.git"
+  },
+  "object_attributes": {
+    "id": 23516,
+    "target_branch": "develop",
+    "source_branch": "master",
+    "source_project_id": 4431,
+    "author_id": 1025,
+    "assignee_id": null,
+    "title": "Init",
+    "created_at": "2017-12-08 10:41:51 UTC",
+    "updated_at": "2017-12-08 10:44:03 UTC",
+    "milestone_id": null,
+    "state": "opened",
+    "merge_status": "unchecked",
+    "target_project_id": 4431,
+    "iid": 2,
+    "description": "",
+    "updated_by_id": null,
+    "merge_error": null,
+    "merge_params": {
+      "force_remove_source_branch": null
+    },
+    "merge_when_pipeline_succeeds": false,
+    "merge_user_id": null,
+    "merge_commit_sha": null,
+    "deleted_at": null,
+    "in_progress_merge_commit_sha": null,
+    "lock_version": null,
+    "time_estimate": 0,
+    "last_edited_at": null,
+    "last_edited_by_id": null,
+    "head_pipeline_id": null,
+    "ref_fetched": true,
+    "merge_jid": null,
+    "discussion_locked": null,
+    "source": {
+      "name": "recette-ci",
+      "description": "",
+      "web_url": "https://gitlab.domain/michael.coulleret/recette-ci",
+      "avatar_url": null,
+      "git_ssh_url": "git@gitlab.domain:michael.coulleret/recette-ci.git",
+      "git_http_url": "https://gitlab.domain/michael.coulleret/recette-ci.git",
+      "namespace": "michael.coulleret",
+      "visibility_level": 0,
+      "path_with_namespace": "michael.coulleret/recette-ci",
+      "default_branch": "master",
+      "ci_config_path": null,
+      "homepage": "https://gitlab.domain/michael.coulleret/recette-ci",
+      "url": "git@gitlab.domain:michael.coulleret/recette-ci.git",
+      "ssh_url": "git@gitlab.domain:michael.coulleret/recette-ci.git",
+      "http_url": "https://gitlab.domain/michael.coulleret/recette-ci.git"
+    },
+    "target": {
+      "name": "recette-ci",
+      "description": "",
+      "web_url": "https://gitlab.domain/michael.coulleret/recette-ci",
+      "avatar_url": null,
+      "git_ssh_url": "git@gitlab.domain:michael.coulleret/recette-ci.git",
+      "git_http_url": "https://gitlab.domain/michael.coulleret/recette-ci.git",
+      "namespace": "michael.coulleret",
+      "visibility_level": 0,
+      "path_with_namespace": "michael.coulleret/recette-ci",
+      "default_branch": "master",
+      "ci_config_path": null,
+      "homepage": "https://gitlab.domain/michael.coulleret/recette-ci",
+      "url": "git@gitlab.domain:michael.coulleret/recette-ci.git",
+      "ssh_url": "git@gitlab.domain:michael.coulleret/recette-ci.git",
+      "http_url": "https://gitlab.domain/michael.coulleret/recette-ci.git"
+    },
+    "last_commit": {
+      "id": "10a61c6e91fc09d1d6e449cd9d3765ab21a8ea23",
+      "message": "Init\n",
+      "timestamp": "2017-12-08T11:42:59+01:00",
+      "url": "https://gitlab.domain/michael.coulleret/recette-ci/commit/10a61c6e91fc09d1d6e449cd9d3765ab21a8ea23",
+      "author": {
+        "name": "Michael COULLERET",
+        "email": "michael@coulleret.pro"
+      }
+    },
+    "work_in_progress": false,
+    "total_time_spent": 0,
+    "human_total_time_spent": null,
+    "human_time_estimate": null,
+    "url": "https://gitlab.domain/michael.coulleret/recette-ci/merge_requests/2",
+    "action": "update",
+    "oldrev": "1b0cf99af6f2e1ced04cbadab1a675c0c285f07d"
+  },
+  "labels": [
+
+  ],
+  "repository": {
+    "name": "recette-ci",
+    "url": "git@gitlab.domain:michael.coulleret/recette-ci.git",
+    "description": "",
+    "homepage": "https://gitlab.domain/michael.coulleret/recette-ci"
+  }
+}

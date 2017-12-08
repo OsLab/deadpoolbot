@@ -9,23 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace App\StaticModel;
+namespace App\Transformer;
 
 /**
- * Static model labels status.
+ * Interface TransformerInterface.
  *
  * @author Michael COULLERET <michael@coulleret.pro>
- * @author Florent DESPIERRES <florent@despierres.pro>
  */
-final class PipelineStatus
+interface TransformerInterface
 {
-    const RUNNING = 'running';
-
-    const SUCCESS = 'success';
-
-    const CREATED = 'created';
-
-    const SKIPPED = 'skipped';
-
-    const FAILED = 'failed';
+    /**
+     * Transform to data array to object.
+     */
+    public function transform(array $data);
 }

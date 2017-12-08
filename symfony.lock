@@ -146,6 +146,9 @@
     "symfony/annotations-pack": {
         "version": "v1.0.0"
     },
+    "symfony/browser-kit": {
+        "version": "v4.0.1"
+    },
     "symfony/cache": {
         "version": "v3.4.0"
     },
@@ -184,6 +187,9 @@
     },
     "symfony/doctrine-bridge": {
         "version": "v3.4.1"
+    },
+    "symfony/dom-crawler": {
+        "version": "v4.0.1"
     },
     "symfony/dotenv": {
         "version": "v3.4.0"

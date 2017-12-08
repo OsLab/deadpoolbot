@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the DeadPool Bot project.
+ * This file is part of the ci-bot project.
  *
  * (c) OsLab <https://github.com/OsLab>
  *
@@ -32,19 +32,24 @@ class MergeRequest
     private $id;
 
     /**
+     * @ORM\Column(type="text", name="iid")
+     */
+    private $iid;
+
+    /**
      * @ORM\Column(type="integer", name="object_id")
      */
     private $objectId;
 
     /**
-     * @ORM\Column(type="text", name="source_branch")
-     */
-    private $sourceBranch;
-
-    /**
      * @ORM\Column(type="integer", name="project_id")
      */
     private $projectId;
+
+    /**
+     * @ORM\Column(type="text", name="source_branch")
+     */
+    private $sourceBranch;
 
     /**
      * @ORM\Column(type="text", name="last_commit_id")
@@ -57,9 +62,24 @@ class MergeRequest
     private $url;
 
     /**
-     * @ORM\Column(type="text", name="iid")
+     * @ORM\Column(type="text", name="title")
      */
-    private $iid;
+    private $title;
+
+    /**
+     * @ORM\Column(type="text", name="username")
+     */
+    private $username;
+
+    /**
+     * @ORM\Column(type="text", name="description", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="text", name="assignee_id", nullable=true)
+     */
+    private $assigneeId;
 
     public function getObjectId(): int
     {
@@ -78,14 +98,15 @@ class MergeRequest
         return $this->id;
     }
 
-    public function getSourceBranch(): string
+
+    public function getIid(): string
     {
-        return $this->sourceBranch;
+        return $this->iid;
     }
 
-    public function setSourceBranch(string $sourceBranch): self
+    public function setIid(string $iid): self
     {
-        $this->sourceBranch = $sourceBranch;
+        $this->iid = $iid;
 
         return $this;
     }
@@ -98,6 +119,19 @@ class MergeRequest
     public function setProjectId(int $projectId): self
     {
         $this->projectId = $projectId;
+
+        return $this;
+    }
+
+
+    public function getSourceBranch(): string
+    {
+        return $this->sourceBranch;
+    }
+
+    public function setSourceBranch(string $sourceBranch): self
+    {
+        $this->sourceBranch = $sourceBranch;
 
         return $this;
     }
@@ -126,14 +160,49 @@ class MergeRequest
         return $this;
     }
 
-    public function getIid(): string
+    public function getTitle(): string
     {
-        return $this->iid;
+        return $this->title;
     }
 
-    public function setIid(string $iid): self
+    public function setTitle(string $title): self
     {
-        $this->iid = $iid;
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function setUsername($username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getAssigneeId(): ?string
+    {
+        return $this->assigneeId;
+    }
+
+    public function setAssigneeId(string $assigneeId): self
+    {
+        $this->assigneeId = $assigneeId;
 
         return $this;
     }

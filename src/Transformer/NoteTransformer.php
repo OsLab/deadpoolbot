@@ -9,23 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace App\StaticModel;
+namespace App\Transformer;
 
 /**
- * Static model labels status.
+ * Note transformer.
  *
  * @author Michael COULLERET <michael@coulleret.pro>
- * @author Florent DESPIERRES <florent@despierres.pro>
  */
-final class PipelineStatus
+final class NoteTransformer implements TransformerInterface
 {
-    const RUNNING = 'running';
-
-    const SUCCESS = 'success';
-
-    const CREATED = 'created';
-
-    const SKIPPED = 'skipped';
-
-    const FAILED = 'failed';
+    public function transform(array $data): Note
+    {
+        return (new Note())
+        ;
+    }
 }
