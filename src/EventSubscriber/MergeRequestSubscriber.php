@@ -55,7 +55,7 @@ class MergeRequestSubscriber implements EventSubscriberInterface
 
     public function __construct(Client $client, MergeRequestRepository $mergeRequestManager, ConfigResolver $config, LoggerInterface $logger)
     {
-        $this->client = $client->api('merge_requests');
+        $this->client = $client->mergeRequests();
         $this->logger = $logger;
         $this->config = $config;
         $this->mergeRequestManager = $mergeRequestManager;
@@ -120,7 +120,7 @@ class MergeRequestSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function support(Object $mergeRequest)
+    public function support(MergeRequest $mergeRequest)
     {
         if ($mergeRequest->getUsername() === $this->config->getConfig('bot_username')) {
             return false;

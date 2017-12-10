@@ -9,40 +9,36 @@
 
 namespace App\Tests\Transformer;
 
-use App\Transformer\MergeRequestTransformer;
-use App\Transformer\TransformerInterface;
+use App\Transformer\NoteTransformer;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @author Michael COULLERET <michael@coulleret.pro>
  */
-class MergeRequestTransformerTest extends TestCase
+class NoteTransformerTest extends TestCase
 {
     /**
-     * @var MergeRequestTransformer
+     * @var NoteTransformer
      */
     private $transformer;
 
     public function setUp()
     {
-        $this->transformer = new MergeRequestTransformer();
+        $this->transformer = new NoteTransformer();
     }
 
     public function testTransformMergeRequest()
     {
-        $stubsJson = file_get_contents(__DIR__.'/../Stubs/merge_request.json');
+        $stubsJson = file_get_contents(__DIR__.'/../Stubs/note.json');
         $items = json_decode($stubsJson, true);
 
         $object = $this->transformer->transform($items);
 
         $this->assertSame($object->getIid(), '2');
-        $this->assertSame($object->getProjectId(), 4431);
         $this->assertSame($object->getObjectId(), 23516);
-        $this->assertSame($object->getSourceBranch(), 'master');
-        $this->assertSame($object->getLastCommitId(), '10a61c6e91fc09d1d6e449cd9d3765ab21a8ea23');
-        $this->assertSame($object->getTitle(), 'Init');
+        $this->assertSame($object->getNote(), 'Ab in suam fractis nomine.');
+        $this->assertSame($object->getUrl(), 'https://gitlab.domain/michael.coulleret/recette-ci/merge_requests/2#note_127455');
         $this->assertSame($object->getUsername(), 'michael.coulleret');
-        $this->assertSame($object->getName(), 'Michaël Coulleret');
-        $this->assertFalse($object->isWorkInProgress());
+        $this->assertTrue($object->isWorkInProgress());
     }
 }

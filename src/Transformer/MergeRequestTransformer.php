@@ -31,6 +31,8 @@ final class MergeRequestTransformer implements TransformerInterface
             ->setLastCommitId($data['object_attributes']['last_commit']['id'])
             ->setTitle($data['object_attributes']['title'])
             ->setUsername($data['user']['username'])
+            ->setName($data['user']['name'])
+            ->setWorkInProgress($data['object_attributes']['work_in_progress'])
         ;
     }
 }

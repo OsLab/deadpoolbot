@@ -67,6 +67,11 @@ class MergeRequest
     private $title;
 
     /**
+     * @ORM\Column(type="text", name="name")
+     */
+    private $name;
+
+    /**
      * @ORM\Column(type="text", name="username")
      */
     private $username;
@@ -80,6 +85,11 @@ class MergeRequest
      * @ORM\Column(type="text", name="assignee_id", nullable=true)
      */
     private $assigneeId;
+
+    /**
+     * @ORM\Column(type="integer", name="work_in_progress", options={"default" : 0})
+     */
+    private $workInProgress = false;
 
     public function getObjectId(): int
     {
@@ -170,6 +180,18 @@ class MergeRequest
         return $this;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
@@ -202,6 +224,18 @@ class MergeRequest
     public function setAssigneeId(string $assigneeId): self
     {
         $this->assigneeId = $assigneeId;
+
+        return $this;
+    }
+
+    public function isWorkInProgress(): bool
+    {
+        return $this->workInProgress;
+    }
+
+    public function setWorkInProgress(bool $workInProgress): self
+    {
+        $this->workInProgress = $workInProgress;
 
         return $this;
     }

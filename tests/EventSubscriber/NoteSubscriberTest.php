@@ -9,11 +9,11 @@
 
 namespace App\Tests\EventSubscriber;
 
-use App\EventSubscriber\MergeRequestSubscriber;
+use App\EventSubscriber\NoteSubscriber;
 use App\GitlabEvents;
-use App\Repository\MergeRequestRepository;
 use App\Resolver\ConfigResolver;
 use Gitlab\Api\MergeRequests;
+use Gitlab\Api\Repositories;
 use Gitlab\Client;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -21,10 +21,10 @@ use Psr\Log\LoggerInterface;
 /**
  * @author Michael COULLERET <michael@coulleret.pro>
  */
-class MergeRequestSubscriberTest extends TestCase
+class NoteSubscriberTest extends TestCase
 {
     private $subscribedEvents = [
-        GitlabEvents::MERGE_REQUEST => 'onMergeRequest',
+        GitlabEvents::NOTE => 'onNote',
     ];
 
     /**
@@ -38,12 +38,7 @@ class MergeRequestSubscriberTest extends TestCase
     private $logger;
 
     /**
-     * @var MergeRequestRepository
-     */
-    private $mergeRequestRepository;
-
-    /**
-     * @var MergeRequestSubscriber
+     * @var NoteSubscriber
      */
     private $subscriber;
 
@@ -52,16 +47,15 @@ class MergeRequestSubscriberTest extends TestCase
         $client = $this->prophesize(Client::class);
         $mergeRequestsApi = $this->prophesize(MergeRequests::class);
         $this->logger = $this->prophesize(LoggerInterface::class);
-        $this->mergeRequestRepository = $this->prophesize(MergeRequestRepository::class);
         $this->configResolver = $this->prophesize(ConfigResolver::class);
 
-        $client->mergeRequests()->willReturn($mergeRequestsApi->reveal());
+        $client->repositories()->willReturn($mergeRequestsApi->reveal());
 
-        $this->subscriber = new MergeRequestSubscriber($client->reveal(), $this->mergeRequestRepository->reveal(), $this->configResolver->reveal(), $this->logger->reveal());
+        $this->subscriber = new NoteSubscriber($client->reveal(), $this->configResolver->reveal(), $this->logger->reveal());
     }
 
     public function testShouldGetSubscribedEvents()
     {
-        $this->assertSame(MergeRequestSubscriber::getSubscribedEvents(), $this->subscribedEvents);
+        $this->assertSame(NoteSubscriber::getSubscribedEvents(), $this->subscribedEvents);
     }
 }

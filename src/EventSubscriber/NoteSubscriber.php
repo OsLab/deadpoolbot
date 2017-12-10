@@ -11,9 +11,9 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\Note;
 use App\Event\WebhooksEvent;
 use App\GitlabEvents;
-use App\Manager\GitlabManager;
 use App\Resolver\ConfigResolver;
 use App\StaticModel\LabelStatus;
 use App\StaticModel\MergeRequestStatus;
@@ -53,7 +53,7 @@ class NoteSubscriber implements EventSubscriberInterface
      */
     public function __construct(Client $client, ConfigResolver $config, LoggerInterface $logger)
     {
-        $this->client = $client;
+        $this->client = $client->repositories();
         $this->logger = $logger;
         $this->config = $config;
     }
@@ -67,6 +67,7 @@ class NoteSubscriber implements EventSubscriberInterface
      */
     public function onNote(WebhooksEvent $event)
     {
+        /** @var Note $data */
         $data = $event->getData();
 
         $this->logger->info('onNote');
@@ -74,67 +75,19 @@ class NoteSubscriber implements EventSubscriberInterface
         if (false === $this->support($data)) {
             return;
         }
-
-        $mergeRequestNumber = $data['merge_request']['id'];
-        $mergeRequestProject = $data['merge_request']['target_project_id'];
-        $mergeRequestUsername = $data['user']['username'];
-
-        // The number of votes is not given, we are obliged to request.
-        $mergeRequest = $this->gitlabManager->getPullRequest()->getByIid($mergeRequestProject, $data['merge_request']['iid'])[0];
-        $upVotes = $mergeRequest['upvotes'];
-        $labels = $mergeRequest['labels'];
-
-        $this->logger->info('Up vote '.$upVotes);
-
-        if ($upVotes > 0) {
-            $labels[] = LabelStatus::REVIEWED;
-
-            $params = [
-                'labels' => implode(',', $labels),
-            ];
-
-            $this->gitlabManager->getPullRequest()->update($mergeRequestProject, $mergeRequestNumber, $params);
-        }
-
-        // The minimum number of votes required is reached
-        if ($upVotes >= $this->config->getConfig('minimum_vote_up')) {
-            $this->logger->info('The minimum number of votes required is reached');
-
-            $message = sprintf('Thank you @%s', $mergeRequestUsername);
-
-            $this->gitlabManager->getPullRequest()->addComment($mergeRequestProject, $mergeRequestNumber, $message);
-
-            if ($this->config->getConfig('auto_merge')) {
-                if ($this->config->getConfig('merge_must_be_approved')) {
-                    /* @todo */
-
-                    return;
-                }
-
-                $this->gitlabManager->getPullRequest()->merge($mergeRequestProject, $mergeRequestNumber);
-            }
-        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function support(array $data): bool
+    public function support(Note $note): bool
     {
-        if (false === isset($data['repository']['name'])) {
+        if ($note->getUsername() === $this->config->getConfig('bot_username')) {
             return false;
         }
 
-        if ($data['user']['username'] === $this->config->getConfig('bot_username')) {
-            return false;
-        }
 
-        if ($data['user']['username'] === $this->config->getConfig('bot_username')) {
-            return false;
-        }
-
-        if ($data['merge_request']['work_in_progress'] === true ||
-            $data['merge_request']['state'] !== MergeRequestStatus::OPENED) {
+        if (true === $note->isWorkInProgress() || $note->getState() !== MergeRequestStatus::OPENED) {
             return false;
         }
 
