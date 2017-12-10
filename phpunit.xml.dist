@@ -39,4 +39,19 @@
             <directory>tests/</directory>
         </testsuite>
     </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+            <exclude>
+                <directory>src/Entity</directory>
+                <directory>src/Event</directory>
+                <directory>src/Migrations</directory>
+                <directory>src/Model</directory>
+                <directory>src/Repository</directory>
+                <directory>src/StaticModel</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
 </phpunit>

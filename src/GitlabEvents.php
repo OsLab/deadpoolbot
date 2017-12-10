@@ -18,6 +18,8 @@ namespace App;
  *
  * @author Michael COULLERET <michael@coulleret.pro>
  * @author Florent DESPIERRES <florent@despierres.pro>
+ *
+ * @codeCoverageIgnore
  */
 final class GitlabEvents
 {

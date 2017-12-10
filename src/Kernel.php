@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the ci-bot project.
+ *
+ * (c) OsLab <https://github.com/OsLab>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App;
 
 use App\Compiler\TransformerCompilerPass;
@@ -9,6 +18,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
@@ -50,10 +62,13 @@ class Kernel extends BaseKernel
         $container->setParameter('container.autowiring.strict_mode', true);
         $container->setParameter('container.dumper.inline_class_loader', true);
         $confDir = $this->getProjectDir().'/config';
+
         $loader->load($confDir.'/packages/*'.self::CONFIG_EXTS, 'glob');
+
         if (is_dir($confDir.'/packages/'.$this->environment)) {
             $loader->load($confDir.'/packages/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
         }
+
         $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
@@ -61,12 +76,15 @@ class Kernel extends BaseKernel
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
         $confDir = $this->getProjectDir().'/config';
+
         if (is_dir($confDir.'/routes/')) {
             $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
         }
+
         if (is_dir($confDir.'/routes/'.$this->environment)) {
             $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
+
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
     }
 }
