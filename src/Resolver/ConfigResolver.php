@@ -46,6 +46,6 @@ class ConfigResolver
 
     public function isPropagateOnAPI(): bool
     {
-        return $this->environment !== 'test';
+        return 'test' !== $this->environment;
     }
 }

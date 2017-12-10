@@ -13,12 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Smoke test.
  */
-class DefaultControllerTest extends WebTestCase
+class BoardControllerTest extends WebTestCase
 {
     /**
-     * @dataProvider getPublicUrls
+     * @dataProvider getUrls
      */
-    public function testPublicUrls($url)
+    public function testUrls($url)
     {
         $client = static::createClient();
 
@@ -26,12 +26,11 @@ class DefaultControllerTest extends WebTestCase
 
         $this->assertSame(
             Response::HTTP_OK,
-            $client->getResponse()->getStatusCode(),
-            sprintf('The %s public URL loads correctly.', $url)
+            $client->getResponse()->getStatusCode()
         );
     }
 
-    public function getPublicUrls()
+    public function getUrls()
     {
         yield ['/'];
     }

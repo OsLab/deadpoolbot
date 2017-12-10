@@ -1,6 +1,14 @@
 {
+    "name": "oslab/ci-bot",
+    "description": "This bot has for objective to give labels to merge request, to merge when the number of votes is reached and when the requirements on acquired. (approved build, approved by owner or members..)",
     "type": "project",
     "license": "proprietary",
+    "authors": [
+        {
+            "name": "Michael COULLERET",
+            "email": "michael@coulleret.pro"
+        }
+    ],
     "require": {
         "php": "^7.2",
         "php-http/guzzle6-adapter": "^1.1",
@@ -20,11 +28,15 @@
     "require-dev": {
         "symfony/dotenv": "^3.4",
         "symfony/browser-kit": "^4.0",
-        "symfony/debug-pack": "^1.0"
+        "symfony/debug-pack": "^1.0",
+        "friendsofphp/php-cs-fixer" : "^2.9"
     },
     "config": {
         "preferred-install": {
             "*": "dist"
+        },
+        "platform": {
+            "php": "7.2"
         },
         "sort-packages": true
     },

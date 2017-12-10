@@ -14,9 +14,9 @@ namespace App\Controller;
 use App\Repository\MergeRequestRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * Controller used to show the latest merge request.
@@ -39,7 +39,7 @@ class BoardController extends AbstractController
     public function indexAction(int $page, MergeRequestRepository $mergeRequest): Response
     {
         return $this->render('board/index.html.twig', [
-            'mergeRequests' => $mergeRequest->findLatest($page)
+            'mergeRequests' => $mergeRequest->findLatest($page),
         ]);
     }
 }

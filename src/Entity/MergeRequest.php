@@ -98,7 +98,6 @@ class MergeRequest
         return $this->id;
     }
 
-
     public function getIid(): string
     {
         return $this->iid;
@@ -122,7 +121,6 @@ class MergeRequest
 
         return $this;
     }
-
 
     public function getSourceBranch(): string
     {
@@ -192,6 +190,7 @@ class MergeRequest
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
         return $this;
     }
 

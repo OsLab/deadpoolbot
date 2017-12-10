@@ -33,7 +33,7 @@ class WebhookControllerTest extends WebTestCase
 
     public function getPublicUrls()
     {
-        yield [ 'POST', '/webhooks/gitlab', $this->loadStub('merge_request.json')];
+        yield ['POST', '/webhooks/gitlab', $this->loadStub('merge_request.json')];
     }
 
     private function loadStub($file): string
