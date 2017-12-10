@@ -99,7 +99,7 @@ class MergeRequestSubscriber implements EventSubscriberInterface
             $labels[] = LabelStatus::IMPROVE;
         }
 
-        if (count($labels) === 1) {
+        if (1 === count($labels)) {
             $labels[] = LabelStatus::FEATURE;
         }
 
@@ -138,8 +138,8 @@ class MergeRequestSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             GitlabEvents::MERGE_REQUEST => 'onMergeRequest',
-        );
+        ];
     }
 }

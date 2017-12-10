@@ -103,7 +103,7 @@ class NoteSubscriber implements EventSubscriberInterface
 
             if ($this->config->getConfig('auto_merge')) {
                 if ($this->config->getConfig('merge_must_be_approved')) {
-                    /** @todo */
+                    /* @todo */
 
                     return;
                 }
@@ -143,8 +143,8 @@ class NoteSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return array(
+        return [
             GitlabEvents::NOTE => 'onNote',
-        );
+        ];
     }
 }

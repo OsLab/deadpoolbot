@@ -20,7 +20,7 @@ final class NoteTransformer implements TransformerInterface
 {
     public function transform(array $data): Note
     {
-        return (new Note())
+        return new Note()
         ;
     }
 }

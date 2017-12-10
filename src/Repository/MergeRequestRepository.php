@@ -42,18 +42,18 @@ class MergeRequestRepository extends ServiceEntityRepository
     /**
      * Creates or updates a user.
      *
-     * @param MergeRequest $mergeRequest The user to persist.
-     * @param bool $andFlush             Whether to flush the query or not (board true).
-     *
-     * @return MergeRequest
+     * @param MergeRequest $mergeRequest the user to persist
+     * @param bool         $andFlush     whether to flush the query or not (board true)
      *
      * @throws ORMException
+     *
+     * @return MergeRequest
      */
     public function createOrUpdate(MergeRequest $mergeRequest, $andFlush = true)
     {
         $this->getEntityManager()->merge($mergeRequest);
 
-        if ($andFlush === true) {
+        if (true === $andFlush) {
             try {
                 $this->getEntityManager()->flush();
             } catch (ORMException $exception) {
