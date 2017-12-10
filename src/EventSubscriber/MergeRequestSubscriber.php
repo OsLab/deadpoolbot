@@ -14,11 +14,12 @@ namespace App\EventSubscriber;
 use App\Entity\MergeRequest;
 use App\Event\WebhooksEvent;
 use App\GitlabEvents;
-use App\Manager\GitlabManager;
 use App\Repository\MergeRequestRepository;
 use App\Resolver\ConfigResolver;
 use App\StaticModel\LabelStatus;
 use Doctrine\ORM\ORMException;
+use Gitlab\Api\MergeRequests;
+use Gitlab\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -33,9 +34,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class MergeRequestSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var GitlabManager
+     * @var MergeRequests
      */
-    private $gitlabManager;
+    private $client;
 
     /**
      * @var MergeRequestRepository
@@ -52,15 +53,9 @@ class MergeRequestSubscriber implements EventSubscriberInterface
      */
     private $config;
 
-    /**
-     * @param GitlabManager          $gitlabManager
-     * @param MergeRequestRepository $mergeRequestManager
-     * @param ConfigResolver         $config
-     * @param LoggerInterface        $logger
-     */
-    public function __construct(GitlabManager $gitlabManager, MergeRequestRepository $mergeRequestManager, ConfigResolver $config, LoggerInterface $logger)
+    public function __construct(Client $client, MergeRequestRepository $mergeRequestManager, ConfigResolver $config, LoggerInterface $logger)
     {
-        $this->gitlabManager = $gitlabManager;
+        $this->client = $client->api('merge_requests');
         $this->logger = $logger;
         $this->config = $config;
         $this->mergeRequestManager = $mergeRequestManager;
@@ -75,9 +70,10 @@ class MergeRequestSubscriber implements EventSubscriberInterface
      *
      * @throws ORMException
      */
-    public function onMergeRequest(WebhooksEvent $event)
+    public function onMergeRequest(WebhooksEvent $event): void
     {
         /** @var MergeRequest $data */
+        $labels = [];
         $mergeRequest = $event->getData();
 
         if (false === $this->support($mergeRequest)) {
@@ -117,7 +113,7 @@ class MergeRequestSubscriber implements EventSubscriberInterface
         $this->mergeRequestManager->createOrUpdate($mergeRequest);
 
         if ($this->config->isPropagateOnAPI()) {
-            $this->gitlabManager->getPullRequest()->update($mergeRequest->getProjectId(), $mergeRequest->getObjectId(), $params);
+            $this->client->update($mergeRequest->getProjectId(), $mergeRequest->getObjectId(), $params);
         }
     }
 

@@ -20,7 +20,7 @@ before_script:
   - php bin/console doctrine:schema:update --force
 
 script:
-  - ./vendor/bin/simple-phpunit
+  - ./vendor/bin/simple-phpunit tests/
   - ./vendor/bin/php-cs-fixer fix --diff --dry-run -v
 
 after_script:

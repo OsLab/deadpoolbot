@@ -139,7 +139,7 @@ class MergeRequest
         return $this->lastCommitId;
     }
 
-    public function setLastCommitId(string $lastCommitId)
+    public function setLastCommitId(string $lastCommitId): self
     {
         $this->lastCommitId = $lastCommitId;
 

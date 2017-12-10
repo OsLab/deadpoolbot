@@ -17,6 +17,7 @@ use App\Manager\GitlabManager;
 use App\Resolver\ConfigResolver;
 use App\StaticModel\LabelStatus;
 use App\StaticModel\MergeRequestStatus;
+use Gitlab\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -31,26 +32,28 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class NoteSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var GitlabManager
+     * @var Client
      */
-    private $gitlabManager;
+    private $client;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
+
     /**
      * @var ConfigResolver
      */
     private $config;
 
     /**
-     * @param GitlabManager   $gitlabManager
+     * @param Client          $client
      * @param ConfigResolver  $config
      * @param LoggerInterface $logger
      */
-    public function __construct(GitlabManager $gitlabManager, ConfigResolver $config, LoggerInterface $logger)
+    public function __construct(Client $client, ConfigResolver $config, LoggerInterface $logger)
     {
-        $this->gitlabManager = $gitlabManager;
+        $this->client = $client;
         $this->logger = $logger;
         $this->config = $config;
     }

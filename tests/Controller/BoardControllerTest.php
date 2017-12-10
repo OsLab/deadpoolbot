@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+namespace App\Tests\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
