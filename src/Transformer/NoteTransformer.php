@@ -11,6 +11,8 @@
 
 namespace App\Transformer;
 
+use App\Entity\Note;
+
 /**
  * Note transformer.
  *
@@ -20,7 +22,14 @@ final class NoteTransformer implements TransformerInterface
 {
     public function transform(array $data): Note
     {
-        return new Note()
+        return (new Note())
+            ->setIid($data['merge_request']['iid'])
+            ->setObjectId($data['merge_request']['id'])
+            ->setNote($data['object_attributes']['note'])
+            ->setUrl($data['object_attributes']['url'])
+            ->setUsername($data['user']['username'])
+            ->setWorkInProgress($data['merge_request']['work_in_progress'])
+            ->setWorkInProgress($data['merge_request']['state'])
         ;
     }
 }

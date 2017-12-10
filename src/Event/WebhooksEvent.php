@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\Event;
 class WebhooksEvent extends Event
 {
     /**
-     * @var array
+     * @var Object
      */
     private $data;
 
